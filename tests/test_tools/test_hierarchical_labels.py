@@ -14,6 +14,15 @@ from kicad_mcp_server.tools.schematic_editor import (
     add_global_label,
     add_hierarchical_label,
 )
+from kicad_mcp_server.utils.kicad_version import get_kicad_symbol_dir
+
+# Every test here places a real component first (add_component_from_library
+# embeds the symbol definition from KiCad's own Device library), so the
+# whole module needs a KiCad install — not present on plain CI runners.
+pytestmark = pytest.mark.skipif(
+    get_kicad_symbol_dir() is None,
+    reason="KiCad symbol libraries not installed",
+)
 
 SCH_TEMPLATE = """(kicad_sch
 \t(version 20250114)
